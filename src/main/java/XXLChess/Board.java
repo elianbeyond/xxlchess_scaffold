@@ -3,58 +3,161 @@ package XXLChess;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import java.util.ArrayList;
+
 public class Board {
 
-    private Tile[][] tiles;
-    private PImage[] pieceImages;
+    private static final int TILE_SIZE = 48;
+    private static final int SIDE_BAR_WIDTH = 120;
+    private static final int BOARD_WIDTH = 14;
+    private static final int BOARD_HEIGHT = 14;
+
+
+    public static final int HIGHLIGHT_BLUE = 1;
+    public static final int LIGHT_BLUE = 2;
+    public static final int GREEN = 3;
+    public static final int ORANGE = 4;
+
+    public static final int BROWN = 5;
+
+    public static final int LIGHT_YELLOW = 6;
+    public static final int GREEN_YELLOW = 7;
+    public static final int RED = 8;
+
+
+
+
     private PApplet p;
+    public static Tile[][] tiles;
+    private boolean selected = false;
+    private ArrayList<Tile> recover;
 
-    public Board(PApplet p, PImage[] pieceImages) {
-        this.p = p;
-        this.pieceImages = pieceImages;
-        this.tiles = new Tile[8][8];
+    private Tile selectedTile;
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                boolean isBlack = (i + j) % 2 == 1;
-                this.tiles[i][j] = new Tile(i * Piece.SIZE, j * Piece.SIZE, Piece.SIZE, isBlack);
-                if (j == 0) {
-                    this.tiles[i][j].setPiece(new Piece(i * Piece.SIZE, j * Piece.SIZE, pieceImages[2], false));
-                }
-                if (j == 1) {
-                    this.tiles[i][j].setPiece(new Piece(i * Piece.SIZE, j * Piece.SIZE, pieceImages[1], false));
-                }
-                if (j == 6) {
-                    this.tiles[i][j].setPiece(new Piece(i * Piece.SIZE, j * Piece.SIZE, pieceImages[1], true));
-                }
-                if (j == 7) {
-                    this.tiles[i][j].setPiece(new Piece(i * Piece.SIZE, j * Piece.SIZE, pieceImages[2], true));
-                }
-            }
-        }
+
+    public Board(PApplet parent, PImage[] sprites) {
+        this.p = parent;
+        initTiles();
     }
 
 
+    private void initTiles() {
+        tiles = new Tile[BOARD_WIDTH][BOARD_HEIGHT];
+        int tileColor;
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_HEIGHT; j++) {
+                if ((i + j) % 2 == 0) {
+                    tileColor = LIGHT_YELLOW;
+                } else {
+                    tileColor = BROWN;
+                }
+                tiles[i][j] = new Tile(p, i, j, tileColor);
+            }
+        }
+
+        //init Pieces
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            tiles[i][0].setPiece(App.sprites[i], i, false);
+            tiles[i][1].setPiece(App.sprites[14], 14, false);
+            tiles[i][13].setPiece(App.sprites[i + 15], i + 15, true);
+            tiles[i][12].setPiece(App.sprites[29], 29, true);
+        }
+    }
+
+    /**
+     * Draw the chess board, including the tiles and any highlights.
+     */
     public void drawBoard() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                this.tiles[i][j].drawTile(p);
+        // Draw the tiles
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_HEIGHT; j++) {
+                tiles[i][j].draw();
             }
         }
     }
 
-    public Tile getTile(int x, int y) {
-        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-            return this.tiles[x][y];
-        } else {
-            return null;
+    public void clickEvent(int mouseX, int mouseY) {
+
+
+        int x = mouseX / 48;
+        int y = mouseY / 48;
+        if(selected&&tiles[x][y].isEnableMove()){
+            Tile targetTile = tiles[x][y];
+            drawMove(selectedTile,targetTile);
+            selected=false;
+            recoverTiles(recover);
+            return;
+        }
+
+        if(!selected&&tiles[x][y].getPiece() != null){
+            selected=true;
+            this.selectedTile = tiles[x][y];
+        }else{
+            selected=false;
+        }
+        if(!selected&&recover.size()!=0){
+            recoverTiles(recover);
+        }
+
+        if (selected) {
+            this.recover=tiles[x][y].getPiece().drawValidTiles();
+        }
+
+
+    }
+
+    private void drawMove(Tile selectedTile,Tile targetTile ) {
+        Piece newPiece = new Piece(selectedTile.getPiece().getPieceName(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
+
+        tiles[selectedTile.getCol()][selectedTile.getRow()].getPiece().setImg(null);
+
+        int currentX = selectedTile.getCol()*48;
+        int currentY = selectedTile.getRow()*48;
+        int targetX = targetTile.getCol()*48;
+        int targetY = targetTile.getRow()*48;
+
+
+        while (currentX != targetX || currentY != targetY) { // 到达目标点后的处理
+
+            if (currentX < targetX) { // 判断是否到达目标点
+                currentX += 1; // 每一帧移动的距离
+            }
+            if(currentX > targetX){
+                currentX-=1;
+            }
+            if (currentY < targetY) {
+                currentY += 1;
+            }
+            if(currentY>targetY){
+                currentY-=1;
+            }
+            p.image(newPiece.getImg(), currentX,currentY , 48, 48);
+
+        }
+        // do something
+
+
+
+        tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
+
+        //update targetTile
+        newPiece.setCurrentTile(targetTile);
+        tiles[targetTile.getCol()][targetTile.getRow()].setPiece(newPiece);
+    }
+
+    private void recoverTiles(ArrayList<Tile> recover) {
+        for(Tile tile:recover){
+            tiles[tile.getCol()][tile.getRow()].setTileColor(tile.getTileColor());
+            tiles[tile.getCol()][tile.getRow()].setEnableMove(tile.isEnableMove());
         }
     }
 
-    public void movePiece(Tile startTile, Tile endTile) {
-        if (startTile != null && endTile != null && startTile.getPiece() != null && endTile.getPiece() == null) {
-            endTile.setPiece(startTile.removePiece());
-        }
-    }
 
+    /**
+     * Draw a blue highlight at the given tile coordinates.
+     */
+    private void drawBlueHighlight(int x, int y) {
+        p.fill(0, 0, 255, 100);
+        p.rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
 }

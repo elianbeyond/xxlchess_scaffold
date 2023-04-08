@@ -4,6 +4,7 @@ package XXLChess;
 //import org.reflections.scanners.Scanners;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.data.JSONObject;
 import processing.event.MouseEvent;
 
@@ -33,6 +34,39 @@ public class App extends PApplet {
     public void settings() {
         size(WIDTH, HEIGHT);
     }
+    public static PImage[] sprites = new PImage[30];
+    public static String[] filenames = new String[] {
+            "b-rook.png",
+            "b-knight.png",
+            "b-bishop.png",
+            "b-archbishop.png",
+            "b-camel.png",
+            "b-knight-king.png",
+            "b-amazon.png",
+            "b-king.png",
+            "b-knight-king.png",
+            "b-camel.png",
+            "b-chancellor.png",
+            "b-bishop.png",
+            "b-knight.png",
+            "b-rook.png",
+            "b-pawn.png",
+            "w-rook.png",
+            "w-knight.png",
+            "w-bishop.png",
+            "w-archbishop.png",
+            "w-camel.png",
+            "w-knight-king.png",
+            "w-amazon.png",
+            "w-king.png",
+            "w-knight-king.png",
+            "w-camel.png",
+            "w-chancellor.png",
+            "w-bishop.png",
+            "w-knight.png",
+            "w-rook.png",
+            "w-pawn.png",
+    };
     private Board board;
 
     /**
@@ -44,13 +78,48 @@ public class App extends PApplet {
         // Load images during setup
 
 
+        String[] filenames = new String[] {
+                "b-rook.png",
+                "b-knight.png",
+                "b-bishop.png",
+                "b-archbishop.png",
+                "b-camel.png",
+                "b-knight-king.png",
+                "b-amazon.png",
+                "b-king.png",
+                "b-knight-king.png",
+                "b-camel.png",
+                "b-chancellor.png",
+                "b-bishop.png",
+                "b-knight.png",
+                "b-rook.png",
+                "b-pawn.png",
+                "w-rook.png",
+                "w-knight.png",
+                "w-bishop.png",
+                "w-archbishop.png",
+                "w-camel.png",
+                "w-knight-king.png",
+                "w-amazon.png",
+                "w-king.png",
+                "w-knight-king.png",
+                "w-camel.png",
+                "w-chancellor.png",
+                "w-bishop.png",
+                "w-knight.png",
+                "w-rook.png",
+                "w-pawn.png",
+        };
 
         // PImage spr = loadImage("src/main/resources/XXLChess/"+...);
+        for (int i = 0; i < filenames.length; i++) {
+            sprites[i] = loadImage("src/main/resources/XXLChess/" + filenames[i]);
+        }
+        this.board = new Board(this, sprites);
 
 		// load config
         JSONObject conf = loadJSONObject(new File(this.configPath));
 
-        // instantiate the Board object
 
 
     }
@@ -72,7 +141,8 @@ public class App extends PApplet {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        
+        this.board.clickEvent(mouseX,mouseY);
+
     }
 
     @Override
@@ -96,8 +166,7 @@ public class App extends PApplet {
 	// Add any additional methods or attributes you want. Please put classes in different files.
 
 
-    public static void main(String[] args) {
-        PApplet.main("XXLChess.App");
+    public static void main(String[] args) {PApplet.main("XXLChess.App");
     }
 
 }
