@@ -131,6 +131,11 @@ public class Board {
             if(currentY>targetY){
                 currentY-=1;
             }
+            //When the conditions are met, pawn becomes queen
+            if(currentY==6*48&&newPiece.getPieceName().contains("pawn")&&newPiece.getWhite()){
+                newPiece.setPieceName("w-queen");
+                newPiece.setImg(App.sprites[31]);
+            }
             p.image(newPiece.getImg(), currentX,currentY , 48, 48);
 
         }

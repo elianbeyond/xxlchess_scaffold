@@ -34,7 +34,7 @@ public class App extends PApplet {
     public void settings() {
         size(WIDTH, HEIGHT);
     }
-    public static PImage[] sprites = new PImage[30];
+    public static PImage[] sprites = new PImage[32];
     public static String[] filenames = new String[] {
             "b-rook.png",
             "b-knight.png",
@@ -66,6 +66,8 @@ public class App extends PApplet {
             "w-knight.png",
             "w-rook.png",
             "w-pawn.png",
+            "b-queen.png",
+            "w-queen.png",
     };
     private Board board;
 
@@ -78,38 +80,6 @@ public class App extends PApplet {
         // Load images during setup
 
 
-        String[] filenames = new String[] {
-                "b-rook.png",
-                "b-knight.png",
-                "b-bishop.png",
-                "b-archbishop.png",
-                "b-camel.png",
-                "b-knight-king.png",
-                "b-amazon.png",
-                "b-king.png",
-                "b-knight-king.png",
-                "b-camel.png",
-                "b-chancellor.png",
-                "b-bishop.png",
-                "b-knight.png",
-                "b-rook.png",
-                "b-pawn.png",
-                "w-rook.png",
-                "w-knight.png",
-                "w-bishop.png",
-                "w-archbishop.png",
-                "w-camel.png",
-                "w-knight-king.png",
-                "w-amazon.png",
-                "w-king.png",
-                "w-knight-king.png",
-                "w-camel.png",
-                "w-chancellor.png",
-                "w-bishop.png",
-                "w-knight.png",
-                "w-rook.png",
-                "w-pawn.png",
-        };
 
         // PImage spr = loadImage("src/main/resources/XXLChess/"+...);
         for (int i = 0; i < filenames.length; i++) {
