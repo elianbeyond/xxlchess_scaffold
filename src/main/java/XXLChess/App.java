@@ -23,6 +23,7 @@ public class App extends PApplet {
     public static final int FPS = 60;
 	
     public String configPath;
+    public static Manager manager;
 
     public App() {
         this.configPath = "config.json";
@@ -78,7 +79,7 @@ public class App extends PApplet {
         frameRate(FPS);
 
         // Load images during setup
-
+        this.manager =new Manager(this,false);
 
 
         // PImage spr = loadImage("src/main/resources/XXLChess/"+...);
@@ -130,6 +131,11 @@ public class App extends PApplet {
         // draw the board
         this.board.drawBoard();
         //test
+        //
+        if(this.manager.exectMove){
+            this.manager.speedControl();
+            this.manager.drawPiece();
+        }
         
     }
 	

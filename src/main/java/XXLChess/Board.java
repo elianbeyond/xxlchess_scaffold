@@ -78,15 +78,23 @@ public class Board {
 
     public void clickEvent(int mouseX, int mouseY) {
 
-
         int x = mouseX / 48;
         int y = mouseY / 48;
         if(selected&&tiles[x][y].isEnableMove()){
             Tile targetTile = tiles[x][y];
-            drawMove(selectedTile,targetTile);
-            selected=false;
-            recoverTiles(recover);
-            return;
+
+            App.manager.x = selectedTile.getCol()*48;
+            App.manager.y = selectedTile.getRow()*48;
+            App.manager.selectedTile = this.selectedTile;
+            App.manager.targetTile = targetTile;
+
+
+            Piece newPiece = new Piece(selectedTile.getPiece().getPieceName(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
+            App.manager.selectedPiece = newPiece;
+            tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
+            App.manager.exectMove = true;
+
+
         }
 
         if(!selected&&tiles[x][y].getPiece() != null){
@@ -109,7 +117,7 @@ public class Board {
     private void drawMove(Tile selectedTile,Tile targetTile ) {
         Piece newPiece = new Piece(selectedTile.getPiece().getPieceName(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
 
-        tiles[selectedTile.getCol()][selectedTile.getRow()].getPiece().setImg(null);
+
 
         int currentX = selectedTile.getCol()*48;
         int currentY = selectedTile.getRow()*48;
@@ -117,37 +125,15 @@ public class Board {
         int targetY = targetTile.getRow()*48;
 
 
-        while (currentX != targetX || currentY != targetY) { // 到达目标点后的处理
 
-            if (currentX < targetX) { // 判断是否到达目标点
-                currentX += 1; // 每一帧移动的距离
-            }
-            if(currentX > targetX){
-                currentX-=1;
-            }
-            if (currentY < targetY) {
-                currentY += 1;
-            }
-            if(currentY>targetY){
-                currentY-=1;
-            }
-            //When the conditions are met, pawn becomes queen
-            if(currentY==6*48&&newPiece.getPieceName().contains("pawn")&&newPiece.getWhite()){
-                newPiece.setPieceName("w-queen");
-                newPiece.setImg(App.sprites[31]);
-            }
-            p.image(newPiece.getImg(), currentX,currentY , 48, 48);
-
-        }
         // do something
 
 
 
-        tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
+
 
         //update targetTile
-        newPiece.setCurrentTile(targetTile);
-        tiles[targetTile.getCol()][targetTile.getRow()].setPiece(newPiece);
+
     }
 
     private void recoverTiles(ArrayList<Tile> recover) {

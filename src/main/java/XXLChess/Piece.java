@@ -12,6 +12,7 @@ public class Piece {
     private Boolean isWhite;
     private PImage img;
 
+
     private ArrayList<Tile> validMoves;
 
 
@@ -650,6 +651,8 @@ public class Piece {
 
         return recover;
     }
+
+
 
 
     public String getPieceName() {
