@@ -1,5 +1,5 @@
 {
-  "layout": "layout.txt",
+  "layout": "level1.txt",
   "time_controls": {
     "player": {
       "seconds": 180,

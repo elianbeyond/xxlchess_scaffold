@@ -1,18 +1,66 @@
 package XXLChess;
 
 import processing.core.PApplet;
+import processing.data.JSONObject;
+
+import java.io.*;
+
+import static processing.core.PApplet.loadJSONObject;
+
 //This class judges whether it is a round of white or black, and calculates the score and time这个类判断是白子还是黑子的回合，计算得分和时间
 public class Manager {
     private PApplet p;
     public Boolean exectMove;
     public int x;
     public int y;
+    public String layout;
+    public int seconds;
     public Tile selectedTile;
     public Tile targetTile;
     public Piece selectedPiece;
+    public static char[][] chessBoard;
     public Manager (PApplet parent,Boolean exectMove){
         this.p= parent;
         this.exectMove = exectMove;
+    }
+
+    public void getConfig() throws FileNotFoundException {
+        //readJsonFile
+        File f = new File("config.json");
+        JSONObject jsonObject = loadJSONObject(f);
+
+        //访问JSONObject的属性
+        this.layout= jsonObject.getString("layout");
+        this.seconds = jsonObject.getJSONObject("time_controls").getJSONObject("player").getInt("seconds");
+        String playerColour = jsonObject.getString("player_colour");
+
+    }
+    public void getLayout() throws IOException {
+
+        BufferedReader reader = new BufferedReader(new FileReader(layout));
+        chessBoard = new char[14][14];
+        //逐行读取文件
+        String line;
+        int row = 0;
+        while ((line = reader.readLine()) != null) {
+            //将每行的字符转换为字符数组
+            char[] charArray = line.toCharArray();
+
+            //将字符数组存储在二维数组中
+            for (int col = 0; col < charArray.length; col++) {
+                chessBoard[row][col] = charArray[col];
+            }
+            row++;
+        }
+        //关闭文件
+        reader.close();
+        //打印二维数组
+        for (int i = 0; i < 14; i++) {
+            for (int j = 0; j < 14; j++) {
+                System.out.print(chessBoard[i][j]);
+            }
+            System.out.println();
+        }
     }
     public void speedControl(){
 

@@ -9,6 +9,7 @@ import processing.data.JSONObject;
 import processing.event.MouseEvent;
 
 import java.io.File;
+import java.io.IOException;
 
 public class App extends PApplet {
 
@@ -80,15 +81,27 @@ public class App extends PApplet {
 
         // Load images during setup
         this.manager =new Manager(this,false);
+        try {
+
+            this.manager.getConfig();
+            this.manager.getLayout();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         // PImage spr = loadImage("src/main/resources/XXLChess/"+...);
         for (int i = 0; i < filenames.length; i++) {
             sprites[i] = loadImage("src/main/resources/XXLChess/" + filenames[i]);
         }
-        this.board = new Board(this, sprites);
+        try {
+            this.board = new Board(this, sprites);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-		// load config
+        // load config
         JSONObject conf = loadJSONObject(new File(this.configPath));
 
 
@@ -142,7 +155,9 @@ public class App extends PApplet {
 	// Add any additional methods or attributes you want. Please put classes in different files.
 
 
-    public static void main(String[] args) {PApplet.main("XXLChess.App");
+    public static void main(String[] args) {
+        System.out.println(filenames[0]);
+        PApplet.main("XXLChess.App");
     }
 
 }

@@ -3,6 +3,7 @@ package XXLChess;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Board {
@@ -35,13 +36,13 @@ public class Board {
     private Tile selectedTile;
 
 
-    public Board(PApplet parent, PImage[] sprites) {
+    public Board(PApplet parent, PImage[] sprites) throws IOException {
         this.p = parent;
         initTiles();
     }
 
 
-    private void initTiles() {
+    private void initTiles() throws IOException {
         tiles = new Tile[BOARD_WIDTH][BOARD_HEIGHT];
         int tileColor;
         for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -57,11 +58,79 @@ public class Board {
 
         //init Pieces
         for (int i = 0; i < BOARD_WIDTH; i++) {
-            tiles[i][0].setPiece(App.sprites[i], i, false);
-            tiles[i][1].setPiece(App.sprites[14], 14, false);
-            tiles[i][13].setPiece(App.sprites[i + 15], i + 15, true);
-            tiles[i][12].setPiece(App.sprites[29], 29, true);
+            for (int j = 0; j < BOARD_HEIGHT; j++) {
+                switch (Manager.chessBoard[j][i]){
+                    case 'P':
+                        tiles[i][j].setPiece(App.sprites[14], 14, false);
+                        break;
+                    case 'p':
+                        tiles[i][j].setPiece(App.sprites[29], 29, true);
+                        break;
+                    case 'R':
+                        tiles[i][j].setPiece(App.sprites[13], 13, false);
+                        break;
+                    case 'r':
+                        tiles[i][j].setPiece(App.sprites[28], 28, true);
+                        break;
+                    case 'N':
+                        tiles[i][j].setPiece(App.sprites[12], 12, false);
+                        break;
+                    case 'n':
+                        tiles[i][j].setPiece(App.sprites[27], 27, true);
+                        break;
+                    case 'B':
+                        tiles[i][j].setPiece(App.sprites[2], 2, false);
+                        break;
+                    case 'b':
+                        tiles[i][j].setPiece(App.sprites[17], 17, true);
+                        break;
+                    case 'H':
+                        tiles[i][j].setPiece(App.sprites[3], 3, false);
+                        break;
+                    case 'h':
+                        tiles[i][j].setPiece(App.sprites[18], 18, true);
+                        break;
+                    case 'C':
+                        tiles[i][j].setPiece(App.sprites[9], 9, false);
+                        break;
+                    case 'c':
+                        tiles[i][j].setPiece(App.sprites[24], 24, true);
+                        break;
+                    case 'G':
+                        tiles[i][j].setPiece(App.sprites[8], 8, false);
+                        break;
+                    case 'g':
+                        tiles[i][j].setPiece(App.sprites[23], 23, true);
+                        break;
+                    case 'A':
+                        tiles[i][j].setPiece(App.sprites[6], 6, false);
+                        break;
+                    case 'a':
+                        tiles[i][j].setPiece(App.sprites[21], 21, true);
+                        break;
+                    case 'K':
+                        tiles[i][j].setPiece(App.sprites[7], 7, false);
+                        break;
+                    case 'k':
+                        tiles[i][j].setPiece(App.sprites[22], 22, true);
+                        break;
+                    case 'E':
+                        tiles[i][j].setPiece(App.sprites[10], 10, false);
+                        break;
+                    case 'e':
+                        tiles[i][j].setPiece(App.sprites[25], 25, true);
+                        break;
+                    case 'Q':
+                        tiles[i][j].setPiece(App.sprites[30], 30, false);
+                        break;
+                    case 'q':
+                        tiles[i][j].setPiece(App.sprites[31], 31, true);
+                        break;
+
+                }
+            }
         }
+
     }
 
     /**
