@@ -43,6 +43,10 @@ public class Manager {
                 selectedPiece.setPieceName("w-queen");
                 selectedPiece.setImg(App.sprites[31]);
             }
+            if(this.y==7*48&&selectedPiece.getPieceName().contains("pawn")&&!selectedPiece.getWhite()){
+                selectedPiece.setPieceName("b-queen");
+                selectedPiece.setImg(App.sprites[30]);
+            }
 
             selectedPiece.setCurrentTile(targetTile);
             Board.tiles[targetTile.getCol()][targetTile.getRow()].setPiece(selectedPiece);
