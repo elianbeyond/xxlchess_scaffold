@@ -29,7 +29,8 @@ public class Board {
 
 
     private PApplet p;
-    public static Tile[][] tiles;
+    public Tile[][] tiles;
+    public Piece[][] pieces;
     private boolean selected = false;
     private ArrayList<Tile> recover;
 
@@ -163,7 +164,7 @@ public class Board {
             }
 
             if (selected) {
-                this.recover=tiles[x][y].getPiece().drawValidTiles();
+                this.recover=tiles[x][y].getPiece().drawValidTiles(this);
             }
             return;
         }

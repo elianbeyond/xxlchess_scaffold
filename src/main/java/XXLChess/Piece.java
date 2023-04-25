@@ -37,7 +37,7 @@ public class Piece {
         this.validMoves = null;
     }
 
-    public ArrayList<Tile> getValidMoves() {
+    public ArrayList<Tile> getValidMoves(Board board) {
         //For each chess piece, write its possible moving points.
         ArrayList<Tile> availableTiles = new ArrayList<>();
         int x = currentTile.getCol();
@@ -45,44 +45,44 @@ public class Piece {
         //pawn
         switch (pieceType) {
             case PAWN:
-                availableTiles = pawnRule(x, y);
+                availableTiles = pawnRule(x, y,board);
                 break;
             case ROOK:
-                availableTiles = rookRule(x, y);
+                availableTiles = rookRule(x, y,board);
                 break;
             case KNIGHT:
-                availableTiles = knightRule(x, y);
+                availableTiles = knightRule(x, y,board);
                 break;
             case BISHOP:
-                availableTiles = bishopRule(x, y);
+                availableTiles = bishopRule(x, y,board);
                 break;
             case QUEEN:
-                availableTiles = queenRule(x, y);
+                availableTiles = queenRule(x, y,board);
                 break;
             case KING:
-                availableTiles = kingRule(x, y);
+                availableTiles = kingRule(x, y,board);
                 break;
             case CAMEL:
-                availableTiles = camelRule(x, y);
+                availableTiles = camelRule(x, y,board);
                 break;
             case KNIGHT_KING:
-                availableTiles = knightKingRule(x, y);
+                availableTiles = knightKingRule(x, y,board);
                 break;
             case AMAZON:
-                availableTiles = amazonRule(x, y);
+                availableTiles = amazonRule(x, y,board);
                 break;
             case CHANCELLOR:
-                availableTiles = chancellorRule(x, y);
+                availableTiles = chancellorRule(x, y,board);
                 break;
             case ARCHBISHOP:
-                availableTiles = archbishopRule(x, y);
+                availableTiles = archbishopRule(x, y,board);
                 break;
         }
         return availableTiles;
 
     }
 
-    public ArrayList<Tile> pawnRule(int x, int y) {
+    public ArrayList<Tile> pawnRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
         if (isWhite) {
@@ -90,19 +90,19 @@ public class Piece {
             if (y == 12) {
                 y--;
 
-                if (Board.tiles[x][y].getPiece() == null) {
-                    availableTiles.add(Board.tiles[x][y]);
+                if (board.tiles[x][y].getPiece() == null) {
+                    availableTiles.add(board.tiles[x][y]);
                 }
                 x--;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 x = x + 2;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 x = x - 1;
@@ -111,10 +111,10 @@ public class Piece {
                     return availableTiles;
                 }
 
-                if (Board.tiles[x][y].getPiece() != null) {
+                if (board.tiles[x][y].getPiece() != null) {
                     return availableTiles;
                 } else {
-                    availableTiles.add(Board.tiles[x][y]);
+                    availableTiles.add(board.tiles[x][y]);
                 }
             } else {
                 //pawn is not the first act
@@ -123,19 +123,19 @@ public class Piece {
                     return availableTiles;
                 }
 
-                if (Board.tiles[x][y].getPiece() == null) {
-                    availableTiles.add(Board.tiles[x][y]);
+                if (board.tiles[x][y].getPiece() == null) {
+                    availableTiles.add(board.tiles[x][y]);
                 }
                 x--;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 x = x + 2;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 return availableTiles;
@@ -146,28 +146,28 @@ public class Piece {
             if (y == 1) {
                 y++;
 
-                if (Board.tiles[x][y].getPiece() == null) {
-                    availableTiles.add(Board.tiles[x][y]);
+                if (board.tiles[x][y].getPiece() == null) {
+                    availableTiles.add(board.tiles[x][y]);
                 }
                 x--;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 x = x + 2;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 x = x - 1;
                 y++;
 
-                if (Board.tiles[x][y].getPiece() != null) {
+                if (board.tiles[x][y].getPiece() != null) {
                     return availableTiles;
                 } else {
-                    availableTiles.add(Board.tiles[x][y]);
+                    availableTiles.add(board.tiles[x][y]);
                 }
             } else {
                 //pawn is not the first act
@@ -176,19 +176,19 @@ public class Piece {
                     return availableTiles;
                 }
 
-                if (Board.tiles[x][y].getPiece() == null) {
-                    availableTiles.add(Board.tiles[x][y]);
+                if (board.tiles[x][y].getPiece() == null) {
+                    availableTiles.add(board.tiles[x][y]);
                 }
                 x--;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 x = x + 2;
                 if (x >= 0 && x <= 13 && y >= 0 && y <= 13) {
-                    if (Board.tiles[x][y].getPiece() != null && !Board.tiles[x][y].getPiece().isWhite) {
-                        availableTiles.add(Board.tiles[x][y]);
+                    if (board.tiles[x][y].getPiece() != null && !board.tiles[x][y].getPiece().isWhite) {
+                        availableTiles.add(board.tiles[x][y]);
                     }
                 }
                 return availableTiles;
@@ -197,16 +197,16 @@ public class Piece {
         return availableTiles;
     }
 
-    public ArrayList<Tile> rookRule(int x, int y) {
+    public ArrayList<Tile> rookRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
         int left = x, right = x, up = y, down = y;
         while (left > 0) {
             left--;
-            if (Board.tiles[left][y].getPiece() == null) {
-                availableTiles.add(Board.tiles[left][y]);
-            } else if (Board.tiles[left][y].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[left][y]);
+            if (board.tiles[left][y].getPiece() == null) {
+                availableTiles.add(board.tiles[left][y]);
+            } else if (board.tiles[left][y].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[left][y]);
                 break;
             } else {
                 break;
@@ -214,10 +214,10 @@ public class Piece {
         }
         while (right < 13) {
             right++;
-            if (Board.tiles[right][y].getPiece() == null) {
-                availableTiles.add(Board.tiles[right][y]);
-            } else if (Board.tiles[right][y].getPiece().isWhite != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[right][y]);
+            if (board.tiles[right][y].getPiece() == null) {
+                availableTiles.add(board.tiles[right][y]);
+            } else if (board.tiles[right][y].getPiece().isWhite != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[right][y]);
                 break;
             } else {
                 break;
@@ -225,10 +225,10 @@ public class Piece {
         }
         while (up > 0) {
             up--;
-            if (Board.tiles[x][up].getPiece() == null) {
-                availableTiles.add(Board.tiles[x][up]);
-            } else if (Board.tiles[x][up].getPiece().isWhite != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[x][up]);
+            if (board.tiles[x][up].getPiece() == null) {
+                availableTiles.add(board.tiles[x][up]);
+            } else if (board.tiles[x][up].getPiece().isWhite != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[x][up]);
                 break;
             } else {
                 break;
@@ -236,10 +236,10 @@ public class Piece {
         }
         while (down < 13) {
             down++;
-            if (Board.tiles[x][down].getPiece() == null) {
-                availableTiles.add(Board.tiles[x][down]);
-            } else if (Board.tiles[x][down].getPiece().isWhite != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[x][down]);
+            if (board.tiles[x][down].getPiece() == null) {
+                availableTiles.add(board.tiles[x][down]);
+            } else if (board.tiles[x][down].getPiece().isWhite != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[x][down]);
                 break;
             } else {
                 break;
@@ -248,7 +248,7 @@ public class Piece {
         return availableTiles;
     }
 
-    public ArrayList<Tile> kingRule(int x, int y) {
+    public ArrayList<Tile> kingRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
         for (int i = x - 1; i < x + 2; i++) {
@@ -257,8 +257,8 @@ public class Piece {
                     continue;
                 }
                 if (i >= 0 && i <= 13 && j >= 0 && j <= 13) {
-                    if (Board.tiles[i][j].getPiece() == null || (Board.tiles[i][j].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite())) {
-                        availableTiles.add(Board.tiles[i][j]);
+                    if (board.tiles[i][j].getPiece() == null || (board.tiles[i][j].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite())) {
+                        availableTiles.add(board.tiles[i][j]);
                     }
                 }
             }
@@ -266,17 +266,17 @@ public class Piece {
         return availableTiles;
     }
 
-    public ArrayList<Tile> bishopRule(int x, int y) {
+    public ArrayList<Tile> bishopRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
         int i = x, j = y;
         while (i < 13 && j < 13) {
             i++;
             j++;
-            if (Board.tiles[i][j].getPiece() == null) {
-                availableTiles.add(Board.tiles[i][j]);
-            } else if (Board.tiles[i][j].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[i][j]);
+            if (board.tiles[i][j].getPiece() == null) {
+                availableTiles.add(board.tiles[i][j]);
+            } else if (board.tiles[i][j].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[i][j]);
                 break;
             } else {
                 break;
@@ -287,10 +287,10 @@ public class Piece {
         while (i > 0 && j > 0) {
             i--;
             j--;
-            if (Board.tiles[i][j].getPiece() == null) {
-                availableTiles.add(Board.tiles[i][j]);
-            } else if (Board.tiles[i][j].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[i][j]);
+            if (board.tiles[i][j].getPiece() == null) {
+                availableTiles.add(board.tiles[i][j]);
+            } else if (board.tiles[i][j].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[i][j]);
                 break;
             } else {
                 break;
@@ -301,10 +301,10 @@ public class Piece {
         while (i < 13 && j > 0) {
             i++;
             j--;
-            if (Board.tiles[i][j].getPiece() == null) {
-                availableTiles.add(Board.tiles[i][j]);
-            } else if (Board.tiles[i][j].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[i][j]);
+            if (board.tiles[i][j].getPiece() == null) {
+                availableTiles.add(board.tiles[i][j]);
+            } else if (board.tiles[i][j].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[i][j]);
                 break;
             } else {
                 break;
@@ -315,10 +315,10 @@ public class Piece {
         while (i > 0 && j < 13) {
             i--;
             j++;
-            if (Board.tiles[i][j].getPiece() == null) {
-                availableTiles.add(Board.tiles[i][j]);
-            } else if (Board.tiles[i][j].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite()) {
-                availableTiles.add(Board.tiles[i][j]);
+            if (board.tiles[i][j].getPiece() == null) {
+                availableTiles.add(board.tiles[i][j]);
+            } else if (board.tiles[i][j].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite()) {
+                availableTiles.add(board.tiles[i][j]);
                 break;
             } else {
                 break;
@@ -329,25 +329,25 @@ public class Piece {
 
     }
 
-    public ArrayList<Tile> queenRule(int x, int y) {
+    public ArrayList<Tile> queenRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
-        ArrayList<Tile> rookAvailableTiles = rookRule(x, y);
-        ArrayList<Tile> bishopAvailableTiles = bishopRule(x, y);
+        ArrayList<Tile> rookAvailableTiles = rookRule(x, y,board);
+        ArrayList<Tile> bishopAvailableTiles = bishopRule(x, y,board);
 
         availableTiles.addAll(rookAvailableTiles);
         availableTiles.addAll(bishopAvailableTiles);
         return availableTiles;
     }
 
-    public ArrayList<Tile> knightRule(int x, int y) {
+    public ArrayList<Tile> knightRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
         for (int i = x - 2; i <= x + 2; i++) {
             for (int j = y - 2; j <= y + 2; j++) {
                 if ((Math.abs(x - i) == 1 && Math.abs(y - j) == 2) || ((Math.abs(x - i) == 2 && Math.abs(y - j) == 1))) {
                     if (i >= 0 && i <= 13 && j >= 0 && j <= 13) {
-                        if (Board.tiles[i][j].getPiece() == null || (Board.tiles[i][j].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite())) {
-                            availableTiles.add(Board.tiles[i][j]);
+                        if (board.tiles[i][j].getPiece() == null || (board.tiles[i][j].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite())) {
+                            availableTiles.add(board.tiles[i][j]);
                         }
                     }
                 }
@@ -358,15 +358,15 @@ public class Piece {
 
     }
 
-    public ArrayList<Tile> camelRule(int x, int y) {
+    public ArrayList<Tile> camelRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
         for (int i = x - 3; i <= x + 3; i++) {
             for (int j = y - 3; j <= y + 3; j++) {
                 if ((Math.abs(x - i) == 1 && Math.abs(y - j) == 3) || ((Math.abs(x - i) == 3 && Math.abs(y - j) == 1))) {
                     if (i >= 0 && i <= 13 && j >= 0 && j <= 13) {
-                        if (Board.tiles[i][j].getPiece() == null || (Board.tiles[i][j].getPiece().getWhite() != Board.tiles[x][y].getPiece().getWhite())) {
-                            availableTiles.add(Board.tiles[i][j]);
+                        if (board.tiles[i][j].getPiece() == null || (board.tiles[i][j].getPiece().getWhite() != board.tiles[x][y].getPiece().getWhite())) {
+                            availableTiles.add(board.tiles[i][j]);
                         }
                     }
                 }
@@ -376,68 +376,68 @@ public class Piece {
         return availableTiles;
     }
 
-    public ArrayList<Tile> knightKingRule(int x, int y) {
+    public ArrayList<Tile> knightKingRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
-        ArrayList<Tile> kingAvailableTiles = kingRule(x, y);
-        ArrayList<Tile> knightAvailableTiles = knightRule(x, y);
+        ArrayList<Tile> kingAvailableTiles = kingRule(x, y,board);
+        ArrayList<Tile> knightAvailableTiles = knightRule(x, y,board);
 
         availableTiles.addAll(kingAvailableTiles);
         availableTiles.addAll(knightAvailableTiles);
         return availableTiles;
     }
 
-    public ArrayList<Tile> amazonRule(int x, int y) {
+    public ArrayList<Tile> amazonRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
-        ArrayList<Tile> knightAvailableTiles = knightRule(x, y);
-        ArrayList<Tile> bishopAvailableTiles = bishopRule(x, y);
-        ArrayList<Tile> rookAvailableTiles = rookRule(x, y);
+        ArrayList<Tile> knightAvailableTiles = knightRule(x, y,board);
+        ArrayList<Tile> bishopAvailableTiles = bishopRule(x, y,board);
+        ArrayList<Tile> rookAvailableTiles = rookRule(x, y,board);
         availableTiles.addAll(knightAvailableTiles);
         availableTiles.addAll(bishopAvailableTiles);
         availableTiles.addAll(rookAvailableTiles);
         return availableTiles;
     }
 
-    public ArrayList<Tile> chancellorRule(int x, int y) {
+    public ArrayList<Tile> chancellorRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
 
-        ArrayList<Tile> knightAvailableTiles = knightRule(x, y);
-        ArrayList<Tile> rookAvailableTiles = rookRule(x, y);
+        ArrayList<Tile> knightAvailableTiles = knightRule(x, y,board);
+        ArrayList<Tile> rookAvailableTiles = rookRule(x, y,board);
 
         availableTiles.addAll(knightAvailableTiles);
         availableTiles.addAll(rookAvailableTiles);
         return availableTiles;
     }
 
-    public ArrayList<Tile> archbishopRule(int x, int y) {
+    public ArrayList<Tile> archbishopRule(int x, int y,Board board) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
-        ArrayList<Tile> knightAvailableTiles = knightRule(x, y);
-        ArrayList<Tile> bishopAvailableTiles = bishopRule(x, y);
+        ArrayList<Tile> knightAvailableTiles = knightRule(x, y,board);
+        ArrayList<Tile> bishopAvailableTiles = bishopRule(x, y,board);
         availableTiles.addAll(knightAvailableTiles);
         availableTiles.addAll(bishopAvailableTiles);
         return availableTiles;
     }
 
-    public ArrayList<Tile> drawValidTiles() {
+    public ArrayList<Tile> drawValidTiles(Board board) {
 
-        this.validMoves = getValidMoves();
+        this.validMoves = getValidMoves(board);
         //draw and return previous color information
         ArrayList<Tile> recover = new ArrayList<>();
         for (Tile tile : validMoves) {
             recover.add(new Tile(p, tile.getCol(), tile.getRow(), tile.getTileColor(), false));
-            if (tile.getTileColor() == Board.LIGHT_YELLOW && tile.getPiece() == null) {
-                tile.setTileColor(Board.LIGHT_BLUE);
-            } else if (tile.getTileColor() == Board.LIGHT_YELLOW && tile.getPiece() != null) {
-                tile.setTileColor(Board.ORANGE);
-            } else if (tile.getTileColor() == Board.BROWN && tile.getPiece() == null) {
-                tile.setTileColor(Board.HIGHLIGHT_BLUE);
+            if (tile.getTileColor() == board.LIGHT_YELLOW && tile.getPiece() == null) {
+                tile.setTileColor(board.LIGHT_BLUE);
+            } else if (tile.getTileColor() == board.LIGHT_YELLOW && tile.getPiece() != null) {
+                tile.setTileColor(board.ORANGE);
+            } else if (tile.getTileColor() == board.BROWN && tile.getPiece() == null) {
+                tile.setTileColor(board.HIGHLIGHT_BLUE);
             } else {
-                tile.setTileColor(Board.RED);
+                tile.setTileColor(board.RED);
             }
             tile.setEnableMove(true);
         }
         recover.add(new Tile(p, currentTile.getCol(), currentTile.getRow(), currentTile.getTileColor(), false));
-        currentTile.setTileColor(Board.GREEN);
+        currentTile.setTileColor(board.GREEN);
 
         return recover;
     }

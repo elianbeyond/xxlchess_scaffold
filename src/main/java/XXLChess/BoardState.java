@@ -5,24 +5,24 @@ import java.util.List;
 
 public class BoardState {
     private final int BOARD_SIZE = 14;
-    private Piece[][] boardState;
+    private Piece[][] pieces;
 
     public BoardState() {
         // 初始化棋盘状态为空
-        boardState = new Piece[BOARD_SIZE][BOARD_SIZE];
+        pieces = new Piece[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                boardState[i][j] = Board.tiles[i][j].getPiece();
+                pieces[i][j] = Board.tiles[i][j].getPiece();
             }
         }
     }
 
     public BoardState(BoardState originBoardState) {
         // 初始化棋盘状态为空
-        this.boardState = new Piece[BOARD_SIZE][BOARD_SIZE];
+        this.pieces = new Piece[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                    this.boardState[i][j] = originBoardState.boardState[i][j];
+                    this.pieces[i][j] = originBoardState.pieces[i][j];
             }
         }
     }
@@ -32,7 +32,7 @@ public class BoardState {
         if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
             throw new IllegalArgumentException("Invalid position");
         }
-        return boardState[x][y];
+        return pieces[x][y];
     }
 
     // 在指定位置放置棋子
@@ -41,15 +41,15 @@ public class BoardState {
         int fromY= piece.getCurrentTile().getRow();
 
         piece.setCurrentTile(Board.tiles[x][y]);
-        boardState[fromX][fromY] = null;
-        boardState[x][y] = piece;
+        pieces[fromX][fromY] = null;
+        pieces[x][y] = piece;
 
 
     }
 
     // 获取棋盘状态
-    public Piece[][] getBoardState() {
-        return boardState;
+    public Piece[][] getPieces() {
+        return pieces;
     }
 
 
@@ -65,7 +65,7 @@ public class BoardState {
 
 
     public Piece[][] getPieces() {
-        return boardState;
+        return pieces;
     }
 
     public List<Move> generateLegalMoves(boolean isWhite) {

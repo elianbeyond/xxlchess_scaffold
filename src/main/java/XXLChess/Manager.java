@@ -127,7 +127,7 @@ public class Manager {
             }
 
             selectedPiece.setCurrentTile(targetTile);
-            Board.tiles[targetTile.getCol()][targetTile.getRow()].setPiece(selectedPiece);
+            App.board.tiles[targetTile.getCol()][targetTile.getRow()].setPiece(selectedPiece);
         }
     }
 

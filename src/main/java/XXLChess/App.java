@@ -72,7 +72,7 @@ public class App extends PApplet {
             "b-queen.png",
             "w-queen.png",
     };
-    private Board board;
+    public static Board board;
 
     /**
      * Load all resources such as images. Initialise the elements such as the player, enemies and map elements.
