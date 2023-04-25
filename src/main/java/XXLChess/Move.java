@@ -9,6 +9,12 @@ public class Move {
         return piece;
     }
 
+    public Move(Piece piece, int toX, int toY) {
+        this.piece = piece;
+        this.toX = toX;
+        this.toY = toY;
+    }
+
     public int getX() {
         return toX;
     }
