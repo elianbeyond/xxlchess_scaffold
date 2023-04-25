@@ -7,10 +7,14 @@ import java.util.ArrayList;
 
 public class Piece {
     private PApplet p;
-    private String pieceName;
     private Tile currentTile;
     private Boolean isWhite;
     private PImage img;
+    private Manager.PieceType pieceType;
+
+    public void setPieceType(Manager.PieceType pieceType) {
+        this.pieceType = pieceType;
+    }
 
 
     private ArrayList<Tile> validMoves;
@@ -24,9 +28,9 @@ public class Piece {
         this.img = img;
     }
 
-    public Piece(String pieceName, Tile currentTile, Boolean isWhite, PImage img) {
+    public Piece(Manager.PieceType pieceType, Tile currentTile, Boolean isWhite, PImage img) {
         this.p = currentTile.getP();
-        this.pieceName = pieceName;
+        this.pieceType = pieceType;
         this.currentTile = currentTile;
         this.isWhite = isWhite;
         this.img = img;
@@ -39,52 +43,43 @@ public class Piece {
         int x = currentTile.getCol();
         int y = currentTile.getRow();
         //pawn
-        if (pieceName.contains("pawn")) {
-            return pawnRule(x, y);
-        }
-
-        //rook
-        if (pieceName.contains("rook")) {
-            return rookRule(x, y);
-        }
-        //king
-        if (pieceName.contains("king") && !pieceName.contains("knight")) {
-            return kingRule(x, y);
-        }
-        //queen
-        if (pieceName.contains("queen")) {
-            return queenRule(x, y);
-        }
-        //bishop
-        if (pieceName.contains("-bishop")) {
-            return bishopRule(x, y);
-        }
-        //knight
-        if (pieceName.contains("knight") && !pieceName.contains("king")) {
-            return knightRule(x, y);
-
-        }
-        //camel
-        if (pieceName.contains("camel")) {
-            return camelRule(x, y);
-        }
-        //knight-king
-        if (pieceName.contains("knight-king")) {
-            return knightKingRule(x, y);
-        }
-        //amazon
-        if (pieceName.contains("amazon")) {
-            return amazonRule(x, y);
-        }
-        //chancellor
-        if (pieceName.contains("chancellor")) {
-            return chancellorRule(x, y);
-        }
-        //archbishop
-        if (pieceName.contains("archbishop")) {
-            return archbishopRule(x, y);
+        switch (pieceType) {
+            case PAWN:
+                availableTiles = pawnRule(x, y);
+                break;
+            case ROOK:
+                availableTiles = rookRule(x, y);
+                break;
+            case KNIGHT:
+                availableTiles = knightRule(x, y);
+                break;
+            case BISHOP:
+                availableTiles = bishopRule(x, y);
+                break;
+            case QUEEN:
+                availableTiles = queenRule(x, y);
+                break;
+            case KING:
+                availableTiles = kingRule(x, y);
+                break;
+            case CAMEL:
+                availableTiles = camelRule(x, y);
+                break;
+            case KNIGHT_KING:
+                availableTiles = knightKingRule(x, y);
+                break;
+            case AMAZON:
+                availableTiles = amazonRule(x, y);
+                break;
+            case CHANCELLOR:
+                availableTiles = chancellorRule(x, y);
+                break;
+            case ARCHBISHOP:
+                availableTiles = archbishopRule(x, y);
+                break;
         }
         return availableTiles;
+
     }
 
     public ArrayList<Tile> pawnRule(int x, int y) {
@@ -448,13 +443,7 @@ public class Piece {
     }
 
 
-    public String getPieceName() {
-        return pieceName;
-    }
 
-    public void setPieceName(String pieceName) {
-        this.pieceName = pieceName;
-    }
 
     public Boolean getWhite() {
         return isWhite;
@@ -468,8 +457,21 @@ public class Piece {
     public Tile getCurrentTile() {
         return this.currentTile;
     }
+    public Manager.PieceType getPieceType() {
+        return pieceType;
+    }
 
 
+    public int getValue() {
+        return pieceType.getIntValue();
+    }
 
+    public int getPositionScore() {
+        int x= currentTile.getCol();
+        int y =currentTile.getRow();
+        x = Math.min(x,13-x);
+        y = Math.min(y,13-y);
+        return (x+y)/4;
+    }
 }
 

@@ -25,6 +25,30 @@ public class Manager {
     public int playerIncrement;
     public int computerIncrement;
     public static char[][] chessBoard;
+    public enum PieceType{
+        PAWN(1),
+        ROOK(5),
+        KNIGHT(2),
+        KNIGHT_KING(5),
+        BISHOP(3),
+        ARCHBISHOP(7),
+        CAMEL(2),
+        GUARD(5),
+        AMAZON(12),
+        KING(Integer.MAX_VALUE),
+        CHANCELLOR(8),
+        QUEEN(9);
+        private final int intValue;
+
+        private PieceType(int intValue) {
+            this.intValue = intValue;
+        }
+
+        public int getIntValue() {
+            return intValue;
+        }
+    }
+
     public Manager (PApplet parent,Boolean exectMove){
         this.p= parent;
         this.exectMove = exectMove;
@@ -93,12 +117,12 @@ public class Manager {
             //When the conditions are met, pawn becomes queen
             this.exectMove =false;
             this.playerTurn = !this.playerTurn;
-            if(this.y==6*48&&selectedPiece.getPieceName().contains("pawn")&&selectedPiece.getWhite()){
-                selectedPiece.setPieceName("w-queen");
+            if(this.y==6*48&&selectedPiece.getPieceType().equals(PieceType.PAWN)&&selectedPiece.getWhite()){
+                selectedPiece.setPieceType(PieceType.QUEEN);
                 selectedPiece.setImg(App.sprites[31]);
             }
-            if(this.y==7*48&&selectedPiece.getPieceName().contains("pawn")&&!selectedPiece.getWhite()){
-                selectedPiece.setPieceName("b-queen");
+            if(this.y==7*48&&selectedPiece.getPieceType().equals(PieceType.PAWN)&&!selectedPiece.getWhite()){
+                selectedPiece.setPieceType(PieceType.QUEEN);
                 selectedPiece.setImg(App.sprites[30]);
             }
 

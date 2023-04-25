@@ -179,7 +179,7 @@ public class Board {
                 App.manager.targetTile = targetTile;
 
 
-                Piece newPiece = new Piece(selectedTile.getPiece().getPieceName(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
+                Piece newPiece = new Piece(selectedTile.getPiece().getPieceType(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
                 App.manager.selectedPiece = newPiece;
                 tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
                 App.manager.exectMove = true;
