@@ -146,64 +146,55 @@ public class Board {
     }
 
     public void clickEvent(int mouseX, int mouseY) {
+        if(!App.manager.playerTurn){
+            return;
+        }
 
         int x = mouseX / 48;
         int y = mouseY / 48;
-        if(selected&&tiles[x][y].isEnableMove()){
-            Tile targetTile = tiles[x][y];
 
-            App.manager.x = selectedTile.getCol()*48;
-            App.manager.y = selectedTile.getRow()*48;
-            App.manager.selectedTile = this.selectedTile;
-            App.manager.targetTile = targetTile;
+        //the first click
+        if(!selected){
+            if(tiles[x][y].getPiece() != null&&tiles[x][y].getPiece().getWhite()==App.manager.playerColourIsWhite){
+                selected=true;
+                this.selectedTile = tiles[x][y];
+            }else{
+                selected=false;
+            }
 
-
-            Piece newPiece = new Piece(selectedTile.getPiece().getPieceName(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
-            App.manager.selectedPiece = newPiece;
-            tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
-            App.manager.exectMove = true;
-
-
+            if (selected) {
+                this.recover=tiles[x][y].getPiece().drawValidTiles();
+            }
+            return;
         }
 
-        if(!selected&&tiles[x][y].getPiece() != null){
-            selected=true;
-            this.selectedTile = tiles[x][y];
-        }else{
-            selected=false;
-        }
-        if(!selected&&recover.size()!=0){
-            recoverTiles(recover);
-        }
+        //the second click, move or cancel selected state.
+        if(selected){
+            if(tiles[x][y].isEnableMove()){
+                Tile targetTile = tiles[x][y];
 
-        if (selected) {
-            this.recover=tiles[x][y].getPiece().drawValidTiles();
-        }
+                App.manager.x = selectedTile.getCol()*48;
+                App.manager.y = selectedTile.getRow()*48;
+                App.manager.selectedTile = this.selectedTile;
+                App.manager.targetTile = targetTile;
 
+
+                Piece newPiece = new Piece(selectedTile.getPiece().getPieceName(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
+                App.manager.selectedPiece = newPiece;
+                tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
+                App.manager.exectMove = true;
+                App.manager.playerLeftTime= App.manager.playerLeftTime+App.manager.playerIncrement;
+            }
+            if(recover.size()!=0){
+                recoverTiles(recover);
+            }
+            selected = false;
+            return;
+        }
 
     }
 
-    private void drawMove(Tile selectedTile,Tile targetTile ) {
-        Piece newPiece = new Piece(selectedTile.getPiece().getPieceName(),selectedTile.getPiece().getCurrentTile(),selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
 
-
-
-        int currentX = selectedTile.getCol()*48;
-        int currentY = selectedTile.getRow()*48;
-        int targetX = targetTile.getCol()*48;
-        int targetY = targetTile.getRow()*48;
-
-
-
-        // do something
-
-
-
-
-
-        //update targetTile
-
-    }
 
     private void recoverTiles(ArrayList<Tile> recover) {
         for(Tile tile:recover){
@@ -211,13 +202,13 @@ public class Board {
             tiles[tile.getCol()][tile.getRow()].setEnableMove(tile.isEnableMove());
         }
     }
+    public void computerMove() {
+        //一个可行的hashmap的集合Arraylist<Hashmap>，key是起始点，value是可行点
 
+        //遍历集合 找到重要值变化最高的 一个hashmap
 
-    /**
-     * Draw a blue highlight at the given tile coordinates.
-     */
-    private void drawBlueHighlight(int x, int y) {
-        p.fill(0, 0, 255, 100);
-        p.rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        //执行移动，修改状态
+
+        System.out.println("computer move");
     }
 }

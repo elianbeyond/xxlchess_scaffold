@@ -14,10 +14,16 @@ public class Manager {
     public int x;
     public int y;
     public String layout;
-    public int seconds;
     public Tile selectedTile;
     public Tile targetTile;
     public Piece selectedPiece;
+    public boolean playerColourIsWhite;
+
+    public boolean playerTurn = true;
+    public int playerLeftTime;
+    public int computerLeftTime;
+    public int playerIncrement;
+    public int computerIncrement;
     public static char[][] chessBoard;
     public Manager (PApplet parent,Boolean exectMove){
         this.p= parent;
@@ -31,8 +37,13 @@ public class Manager {
 
         //访问JSONObject的属性
         this.layout= jsonObject.getString("layout");
-        this.seconds = jsonObject.getJSONObject("time_controls").getJSONObject("player").getInt("seconds");
-        String playerColour = jsonObject.getString("player_colour");
+
+        String playerColourString = jsonObject.getString("player_colour");
+        playerColourIsWhite = playerColourString.contains("white");
+        playerLeftTime =jsonObject.getJSONObject("time_controls").getJSONObject("player").getInt("seconds");
+        playerIncrement =jsonObject.getJSONObject("time_controls").getJSONObject("player").getInt("increment");
+        computerLeftTime =jsonObject.getJSONObject("time_controls").getJSONObject("cpu").getInt("seconds");
+        computerIncrement =jsonObject.getJSONObject("time_controls").getJSONObject("cpu").getInt("increment");
 
     }
     public void getLayout() throws IOException {
@@ -54,13 +65,7 @@ public class Manager {
         }
         //关闭文件
         reader.close();
-        //打印二维数组
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j < 14; j++) {
-                System.out.print(chessBoard[i][j]);
-            }
-            System.out.println();
-        }
+
     }
     public void speedControl(){
 
@@ -87,6 +92,7 @@ public class Manager {
         }else{
             //When the conditions are met, pawn becomes queen
             this.exectMove =false;
+            this.playerTurn = !this.playerTurn;
             if(this.y==6*48&&selectedPiece.getPieceName().contains("pawn")&&selectedPiece.getWhite()){
                 selectedPiece.setPieceName("w-queen");
                 selectedPiece.setImg(App.sprites[31]);
@@ -103,6 +109,7 @@ public class Manager {
 
     public void drawPiece(){
         p.image(selectedPiece.getImg(), this.x, this.y,48,48);
+
     }
 
     public Boolean getExectMove() {
@@ -128,6 +135,5 @@ public class Manager {
     public void setY(int y) {
         this.y = y;
     }
-
 
 }

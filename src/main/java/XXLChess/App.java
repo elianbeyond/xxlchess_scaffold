@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class App extends PApplet {
 
-    public static final int SPRITESIZE = 480;
+
     public static final int CELLSIZE = 48;
     public static final int SIDEBAR = 120;
     public static final int BOARD_WIDTH = 14;
@@ -22,6 +22,7 @@ public class App extends PApplet {
     public static int HEIGHT = BOARD_WIDTH*CELLSIZE;
 
     public static final int FPS = 60;
+    public static int  startTime;
 	
     public String configPath;
     public static Manager manager;
@@ -78,13 +79,14 @@ public class App extends PApplet {
     */
     public void setup() {
         frameRate(FPS);
+        startTime = millis();
 
         // Load images during setup
-        this.manager =new Manager(this,false);
+        manager =new Manager(this,false);
         try {
 
-            this.manager.getConfig();
-            this.manager.getLayout();
+            manager.getConfig();
+            manager.getLayout();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -141,13 +143,32 @@ public class App extends PApplet {
 
         background(200); // add a background color to avoid flickering
 
+        int elapsedTime = (millis() - startTime) / 1000;
+
+        // 更新玩家1和玩家2的剩余时间
+        int player1Time = manager.playerLeftTime - elapsedTime;
+        int player2Time = manager.computerLeftTime - elapsedTime;
+
+        // 显示玩家1和玩家2的剩余时间
+        textAlign(CENTER);
+        textSize(20);
+        fill(255); // 设置文本颜色为白色
+        text("Player 1: " + player1Time, 48*15, 48*2);
+        text("Player 2: " + player2Time, 48*15, 48*10);
+
         // draw the board
         this.board.drawBoard();
         //test
         //
-        if(this.manager.exectMove){
-            this.manager.speedControl();
-            this.manager.drawPiece();
+        if(manager.exectMove){
+            manager.speedControl();
+            manager.drawPiece();
+        }
+
+        if(!manager.playerTurn){
+            this.board.computerMove();
+            manager.computerLeftTime = manager.computerLeftTime+manager.computerIncrement;
+            manager.playerTurn = true;
         }
         
     }

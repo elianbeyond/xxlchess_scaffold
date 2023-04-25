@@ -460,9 +460,6 @@ public class Piece {
         return isWhite;
     }
 
-    public void setWhite(Boolean white) {
-        isWhite = white;
-    }
 
     public void setCurrentTile(Tile tile) {
         this.currentTile = tile;
@@ -471,6 +468,8 @@ public class Piece {
     public Tile getCurrentTile() {
         return this.currentTile;
     }
+
+
 
 }
 
