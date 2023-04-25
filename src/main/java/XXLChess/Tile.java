@@ -108,37 +108,37 @@ public class Tile {
         String[] pieceNames =temp.split("\\.");
         String pieceName = pieceNames[0];
         if (pieceName.contains("pawn")) {
-            this.piece = new Piece(PAWN, this, isWhite, img);
+            this.piece = new Piece(PAWN, x,y, isWhite, img);
         }
         else if (pieceName.contains("rook")) {
-            this.piece = new Piece(ROOK, this, isWhite, img);
+            this.piece = new Piece(ROOK, x,y, isWhite, img);
         }
         else if (pieceName.contains("king") && !pieceName.contains("knight")) {
-            this.piece = new Piece(KING, this, isWhite, img);
+            this.piece = new Piece(KING, x,y, isWhite, img);
         }
         else if (pieceName.contains("queen")) {
-            this.piece = new Piece(QUEEN, this, isWhite, img);
+            this.piece = new Piece(QUEEN, x,y, isWhite, img);
         }
         else if (pieceName.contains("-bishop")) {
-            this.piece = new Piece(BISHOP, this, isWhite, img);
+            this.piece = new Piece(BISHOP, x,y, isWhite, img);
         }
         else if (pieceName.contains("knight") && !pieceName.contains("king")) {
-            this.piece = new Piece(KNIGHT, this, isWhite, img);
+            this.piece = new Piece(KNIGHT, x,y, isWhite, img);
         }
         else if (pieceName.contains("camel")) {
-            this.piece = new Piece(CAMEL, this, isWhite, img);
+            this.piece = new Piece(CAMEL, x,y, isWhite, img);
         }
         else if (pieceName.contains("knight-king")) {
-            this.piece = new Piece(KNIGHT_KING, this, isWhite, img);
+            this.piece = new Piece(KNIGHT_KING, x,y, isWhite, img);
         }
         else if (pieceName.contains("amazon")) {
-            this.piece = new Piece(AMAZON, this, isWhite, img);
+            this.piece = new Piece(AMAZON, x,y, isWhite, img);
         }
         else if (pieceName.contains("chancellor")) {
-            this.piece = new Piece(CHANCELLOR, this, isWhite, img);
+            this.piece = new Piece(CHANCELLOR, x,y, isWhite, img);
         }
         else if (pieceName.contains("archbishop")) {
-            this.piece = new Piece(ARCHBISHOP, this, isWhite, img);
+            this.piece = new Piece(ARCHBISHOP, x,y, isWhite, img);
         }
     }
     public void setPiece(Piece piece ) {

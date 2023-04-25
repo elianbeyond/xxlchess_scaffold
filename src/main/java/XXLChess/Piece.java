@@ -7,17 +7,25 @@ import java.util.ArrayList;
 
 public class Piece {
     private PApplet p;
- 
     private Boolean isWhite;
     private PImage img;
     private Manager.PieceType pieceType;
+    public int col;
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int row;
 
     public void setPieceType(Manager.PieceType pieceType) {
         this.pieceType = pieceType;
     }
 
-
-    private ArrayList<Move> validMoves;
 
 
     public PImage getImg() {
@@ -28,12 +36,13 @@ public class Piece {
         this.img = img;
     }
 
-    public Piece(Manager.PieceType pieceType, Tile currentTile, Boolean isWhite, PImage img) {
-        this.p = currentTile.getP();
+    public Piece(Manager.PieceType pieceType, int x,int y, Boolean isWhite, PImage img) {
+
         this.pieceType = pieceType;
         this.isWhite = isWhite;
         this.img = img;
-        this.validMoves = null;
+        col=x;
+        row=y;
     }
 
     public ArrayList<Move> getValidMoves(BoardState boardState,int x,int y) {
@@ -273,9 +282,9 @@ public class Piece {
             i++;
             j++;
             if (boardState.pieces[i][j] == null) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
             } else if (boardState.pieces[i][j].getWhite() != boardState.pieces[x][y].getWhite()) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
                 break;
             } else {
                 break;
@@ -287,9 +296,9 @@ public class Piece {
             i--;
             j--;
             if (boardState.pieces[i][j] == null) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
             } else if (boardState.pieces[i][j].getWhite() != boardState.pieces[x][y].getWhite()) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
                 break;
             } else {
                 break;
@@ -301,9 +310,9 @@ public class Piece {
             i++;
             j--;
             if (boardState.pieces[i][j] == null) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
             } else if (boardState.pieces[i][j].getWhite() != boardState.pieces[x][y].getWhite()) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
                 break;
             } else {
                 break;
@@ -315,9 +324,9 @@ public class Piece {
             i--;
             j++;
             if (boardState.pieces[i][j] == null) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
             } else if (boardState.pieces[i][j].getWhite() != boardState.pieces[x][y].getWhite()) {
-                availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                availableMoves.add(new Move(boardState.pieces[x][y],i,j));
                 break;
             } else {
                 break;
@@ -346,7 +355,7 @@ public class Piece {
                 if ((Math.abs(x - i) == 1 && Math.abs(y - j) == 2) || ((Math.abs(x - i) == 2 && Math.abs(y - j) == 1))) {
                     if (i >= 0 && i <= 13 && j >= 0 && j <= 13) {
                         if (boardState.pieces[i][j] == null || (boardState.pieces[i][j].getWhite() != boardState.pieces[x][y].getWhite())) {
-                            availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                            availableMoves.add(new Move(boardState.pieces[x][y],i,j));
                         }
                     }
                 }
@@ -365,7 +374,7 @@ public class Piece {
                 if ((Math.abs(x - i) == 1 && Math.abs(y - j) == 3) || ((Math.abs(x - i) == 3 && Math.abs(y - j) == 1))) {
                     if (i >= 0 && i <= 13 && j >= 0 && j <= 13) {
                         if (boardState.pieces[i][j] == null || (boardState.pieces[i][j].getWhite() != boardState.pieces[x][y].getWhite())) {
-                            availableMoves.add(new Move(boardState.pieces[i][j],x,y));
+                            availableMoves.add(new Move(boardState.pieces[x][y],i,j));
                         }
                     }
                 }
@@ -417,26 +426,28 @@ public class Piece {
         return availableMoves;
     }
 
-    public ArrayList<Move> drawValidTiles(Board board) {
+    public ArrayList<Tile> drawValidTiles(Board board,int x,int y) {
+        BoardState boardState = new BoardState(board);
 
-        this.validMoves = getValidMoves(board);
+        ArrayList<Tile> validTiles = new ArrayList<>();
+        ArrayList<Move> validMoves = getValidMoves(boardState,x,y);
         //draw and return previous color information
-        ArrayList<Move> recover = new ArrayList<>();
-        for (Tile tile : validMoves) {
-            recover.add(new Tile(p, tile.getCol(), tile.getRow(), tile.getTileColor(), false));
-            if (tile.getTileColor() == board.LIGHT_YELLOW && tile == null) {
+        ArrayList<Tile> recover = new ArrayList<>();
+        for (Move move : validMoves) {
+            Tile tile = App.board.tiles[move.getX()][move.getY()];
+            recover.add(new Tile(p, move.getPiece().col, move.getPiece().row, App.board.tiles[move.getPiece().col][move.getPiece().row].getTileColor(), false));
+            if (tile.getTileColor() == board.LIGHT_YELLOW) {
                 tile.setTileColor(board.LIGHT_BLUE);
-            } else if (tile.getTileColor() == board.LIGHT_YELLOW && tile != null) {
-                tile.setTileColor(board.ORANGE);
-            } else if (tile.getTileColor() == board.BROWN && tile == null) {
+            } else if (tile.getTileColor() == board.BROWN ) {
                 tile.setTileColor(board.HIGHLIGHT_BLUE);
             } else {
                 tile.setTileColor(board.RED);
             }
             tile.setEnableMove(true);
+            validTiles.add(tile);
         }
-        recover.add(new Tile(p, currentTile.getCol(), currentTile.getRow(), currentTile.getTileColor(), false));
-        currentTile.setTileColor(board.GREEN);
+
+        App.board.tiles[x][y].setTileColor(board.GREEN);
 
         return recover;
     }
