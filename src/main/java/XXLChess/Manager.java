@@ -167,7 +167,7 @@ public class Manager {
         targetTile = App.board.tiles[move.getX()][move.getY()];
 
 
-        Piece newPiece = new Piece(selectedTile.getPiece().getPieceType(),selectedTile.getPiece().col,selectedTile.getPiece().row,selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
+        Piece newPiece = new Piece(move.getPiece().getPieceType(),move.getPiece().col,move.getPiece().row,move.getPiece().getWhite(),move.getPiece().getImg());
         App.manager.selectedPiece = newPiece;
         App.board.tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
         x=selectedTile.getCol()*48;
