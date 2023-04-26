@@ -1,5 +1,8 @@
 package XXLChess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BoardState {
     public Piece[][] pieces;
 
@@ -28,5 +31,32 @@ public class BoardState {
             }
 
         }
+    }
+
+    public BoardState makeMove(Move move) {
+        BoardState newBoardState = new BoardState(this);
+        Piece piece = move.getPiece();
+        newBoardState.pieces[piece.col][piece.row] =null;
+        piece.setCol(move.getX());
+        piece.setRow(move.getY());
+        newBoardState.pieces[move.getX()][move.getY()] = piece;
+        return newBoardState;
+
+    }
+
+    public Piece getPieceAt(int i, int j) {
+        return pieces[i][j];
+    }
+
+    public List<Move> generateLegalMoves(boolean isMaximizingPlayer) {
+        List<Move> legalMoves = new ArrayList<>();
+        for(int i=0;i<14;i++){
+            for (int j = 0; j < 14; j++) {
+                if(pieces[i][j]!=null &&pieces[i][j].getWhite()==isMaximizingPlayer){
+                    legalMoves.addAll(pieces[i][j].getValidMoves(this,i,j));
+                }
+            }
+        }
+        return legalMoves;
     }
 }

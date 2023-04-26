@@ -1,12 +1,10 @@
 package XXLChess;
 
-import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.util.ArrayList;
 
 public class Piece {
-    private PApplet p;
     private Boolean isWhite;
     private PImage img;
     private Manager.PieceType pieceType;
@@ -429,13 +427,15 @@ public class Piece {
     public ArrayList<Tile> drawValidTiles(Board board,int x,int y) {
         BoardState boardState = new BoardState(board);
 
-        ArrayList<Tile> validTiles = new ArrayList<>();
+
         ArrayList<Move> validMoves = getValidMoves(boardState,x,y);
         //draw and return previous color information
         ArrayList<Tile> recover = new ArrayList<>();
         for (Move move : validMoves) {
             Tile tile = App.board.tiles[move.getX()][move.getY()];
-            recover.add(new Tile(p, move.getPiece().col, move.getPiece().row, App.board.tiles[move.getPiece().col][move.getPiece().row].getTileColor(), false));
+            Tile tileRecover = new Tile(tile.getP(),tile.getCol(),tile.getRow(),tile.getTileColor());
+            tileRecover.setEnableMove(false);
+            recover.add(tileRecover);
             if (tile.getTileColor() == board.LIGHT_YELLOW) {
                 tile.setTileColor(board.LIGHT_BLUE);
             } else if (tile.getTileColor() == board.BROWN ) {
@@ -444,10 +444,13 @@ public class Piece {
                 tile.setTileColor(board.RED);
             }
             tile.setEnableMove(true);
-            validTiles.add(tile);
         }
 
+
+        Tile tile = App.board.tiles[x][y];
+        Tile tileRecover = new Tile(tile.getP(),tile.getCol(),tile.getRow(),tile.getTileColor());
         App.board.tiles[x][y].setTileColor(board.GREEN);
+        recover.add(tileRecover);
 
         return recover;
     }
@@ -470,10 +473,10 @@ public class Piece {
         return pieceType.getIntValue();
     }
 
-    public int getPositionScore(int x,int y) {
-        x = Math.min(x,13-x);
-        y = Math.min(y,13-y);
-        return (x+y)/4;
+    public int getPositionScore() {
+        col = Math.min(col,13-col);
+        row = Math.min(row,13-row);
+        return (col+row);
     }
 }
 

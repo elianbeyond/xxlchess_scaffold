@@ -30,7 +30,7 @@ public class Board {
 
     private PApplet p;
     public Tile[][] tiles;
-    public Piece[][] pieces;
+
     private boolean selected = false;
     private ArrayList<Tile> recover;
 
@@ -144,6 +144,7 @@ public class Board {
                 tiles[i][j].draw();
             }
         }
+
     }
 
     public void clickEvent(int mouseX, int mouseY) {
@@ -203,13 +204,5 @@ public class Board {
             tiles[tile.getCol()][tile.getRow()].setEnableMove(tile.isEnableMove());
         }
     }
-    public void computerMove() {
-        //一个可行的hashmap的集合Arraylist<Hashmap>，key是起始点，value是可行点
 
-        //遍历集合 找到重要值变化最高的 一个hashmap
-
-        //执行移动，修改状态
-
-        System.out.println("computer move");
-    }
 }

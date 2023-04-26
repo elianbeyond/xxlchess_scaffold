@@ -161,4 +161,32 @@ public class Manager {
         this.y = y;
     }
 
+    public void computerMove() {
+//        AlphaBetaPruning alphaBetaPruning = new AlphaBetaPruning(playerColourIsWhite,new BoardState(App.board));
+//        Move move = alphaBetaPruning.findBestMove();
+//        //执行移动，修改状态
+//
+//        x = move.getPiece().col*48;
+//        y = move.getPiece().row*48;
+
+        //test move
+        Move move = new Move(App.board.tiles[5][12].getPiece(),5,11);
+
+        selectedTile = App.board.tiles[move.getPiece().col][move.getPiece().row];
+        targetTile = App.board.tiles[move.getX()][move.getY()];
+
+
+        Piece newPiece = new Piece(selectedTile.getPiece().getPieceType(),selectedTile.getPiece().col,selectedTile.getPiece().row,selectedTile.getPiece().getWhite(),selectedTile.getPiece().getImg());
+        App.manager.selectedPiece = newPiece;
+        App.board.tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
+        x=selectedTile.getCol()*48;
+        y=selectedTile.getRow()*48;
+        exectMove = true;
+        App.manager.playerLeftTime= App.manager.playerLeftTime+App.manager.playerIncrement;
+
+
+
+        System.out.println("computer move");
+    }
+
 }

@@ -10,7 +10,7 @@ public class Move {
     }
 
     public Move(Piece piece, int toX, int toY) {
-        this.piece = piece;
+        this.piece = new Piece(piece.getPieceType(), piece.col,piece.row, piece.getWhite(), piece.getImg());
         this.toX = toX;
         this.toY = toY;
     }
