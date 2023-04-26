@@ -56,6 +56,7 @@ public class BoardState {
                 }
             }
         }
+
         return legalMoves;
     }
 }

@@ -164,6 +164,7 @@ public class Manager {
 //        Move move = new Move(App.board.tiles[5][12].getPiece(),5,11);
 
         selectedTile = App.board.tiles[move.getPiece().col][move.getPiece().row];
+        selectedTile.removePiece();
         targetTile = App.board.tiles[move.getX()][move.getY()];
 
 

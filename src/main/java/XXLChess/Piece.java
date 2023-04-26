@@ -259,9 +259,6 @@ public class Piece {
 
         for (int i = x - 1; i < x + 2; i++) {
             for (int j = y - 1; j < y + 2; j++) {
-                if (i == x && j == y) {
-                    continue;
-                }
                 if (i >= 0 && i <= 13 && j >= 0 && j <= 13) {
                     if (boardState.pieces[i][j] == null || (boardState.pieces[i][j].getWhite() != boardState.pieces[x][y].getWhite())) {
                         availableMoves.add(new Move(boardState.pieces[x][y],i,j));
