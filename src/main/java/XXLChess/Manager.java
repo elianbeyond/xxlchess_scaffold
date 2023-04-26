@@ -27,18 +27,18 @@ public class Manager {
     public int computerIncrement;
     public static char[][] chessBoard;
     public enum PieceType{
-        PAWN(1),
-        ROOK(5),
-        KNIGHT(2),
-        KNIGHT_KING(5),
-        BISHOP(3),
-        ARCHBISHOP(7),
-        CAMEL(2),
-        GUARD(5),
-        AMAZON(12),
+        PAWN(10),
+        ROOK(50),
+        KNIGHT(20),
+        KNIGHT_KING(50),
+        BISHOP(30),
+        ARCHBISHOP(70),
+        CAMEL(20),
+        GUARD(50),
+        AMAZON(120),
         KING(Integer.MAX_VALUE),
-        CHANCELLOR(8),
-        QUEEN(9);
+        CHANCELLOR(80),
+        QUEEN(90);
         private final int intValue;
 
         private PieceType(int intValue) {
@@ -155,7 +155,7 @@ public class Manager {
 
 
 
-        AlphaBetaPruning alphaBetaPruning = new AlphaBetaPruning(playerColourIsWhite,new BoardState(App.board));
+        AlphaBetaPruning alphaBetaPruning = new AlphaBetaPruning(!playerColourIsWhite,new BoardState(App.board));
         Move move = alphaBetaPruning.findBestMove();
         //执行移动，修改状态
 

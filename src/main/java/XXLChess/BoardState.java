@@ -35,7 +35,8 @@ public class BoardState {
 
     public BoardState makeMove(Move move) {
         BoardState newBoardState = new BoardState(this);
-        Piece piece = move.getPiece();
+        Piece piece =new Piece(move.getPiece().getPieceType(), move.getPiece().col,move.getPiece().row, move.getPiece().getWhite(), move.getPiece().getImg());
+
         newBoardState.pieces[piece.col][piece.row] =null;
         piece.setCol(move.getX());
         piece.setRow(move.getY());

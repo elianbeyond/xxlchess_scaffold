@@ -476,7 +476,7 @@ public class Piece {
     public int getPositionScore() {
         col = Math.min(col,13-col);
         row = Math.min(row,13-row);
-        return (col+row);
+        return (col*row);
     }
 }
 
