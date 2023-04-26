@@ -185,6 +185,7 @@ public class Board {
                 App.manager.selectedPiece = newPiece;
                 tiles[selectedTile.getCol()][selectedTile.getRow()].removePiece();
                 App.manager.exectMove = true;
+                App.manager.playerTurn = false;
                 App.manager.playerLeftTime= App.manager.playerLeftTime+App.manager.playerIncrement;
             }
             if(recover.size()!=0){

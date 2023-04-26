@@ -116,7 +116,7 @@ public class Manager {
         }else{
             //When the conditions are met, pawn becomes queen
             this.exectMove =false;
-            this.playerTurn = !this.playerTurn;
+
             if(this.y==6*48&&selectedPiece.getPieceType().equals(PieceType.PAWN)&&selectedPiece.getWhite()){
                 selectedPiece.setPieceType(PieceType.QUEEN);
                 selectedPiece.setImg(App.sprites[31]);
@@ -182,11 +182,14 @@ public class Manager {
         x=selectedTile.getCol()*48;
         y=selectedTile.getRow()*48;
         exectMove = true;
+
+        playerTurn = true;
         App.manager.playerLeftTime= App.manager.playerLeftTime+App.manager.playerIncrement;
 
 
 
         System.out.println("computer move");
+
     }
 
 }
