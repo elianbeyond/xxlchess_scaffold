@@ -165,10 +165,9 @@ public class App extends PApplet {
             manager.drawPiece();
         }
 
-        if(!manager.playerTurn){
+        if(!manager.playerTurn&&manager.aiTurn){
             this.manager.computerMove();
             manager.computerLeftTime = manager.computerLeftTime+manager.computerIncrement;
-            manager.playerTurn = true;
         }
         
     }

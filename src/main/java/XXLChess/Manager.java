@@ -20,6 +20,7 @@ public class Manager {
     public boolean playerColourIsWhite;
 
     public boolean playerTurn = true;
+    public boolean aiTurn = false;
     public int playerLeftTime;
     public int computerLeftTime;
     public int playerIncrement;
@@ -116,6 +117,15 @@ public class Manager {
         }else{
             //When the conditions are met, pawn becomes queen
             this.exectMove =false;
+            if(!playerTurn){
+                playerTurn = true;
+            }else{
+                playerTurn =false;
+                aiTurn = true;
+            }
+
+
+
 
             if(this.y==6*48&&selectedPiece.getPieceType().equals(PieceType.PAWN)&&selectedPiece.getWhite()){
                 selectedPiece.setPieceType(PieceType.QUEEN);
@@ -129,48 +139,29 @@ public class Manager {
             selectedPiece.setCol(targetTile.getCol());
             selectedPiece.setRow(targetTile.getRow());
             App.board.tiles[targetTile.getCol()][targetTile.getRow()].setPiece(selectedPiece);
+
+
         }
     }
 
-    public void drawPiece(){
-        p.image(selectedPiece.getImg(), this.x, this.y,48,48);
 
-    }
 
-    public Boolean getExectMove() {
-        return exectMove;
-    }
 
-    public void setExectMove(Boolean exectMove) {
-        this.exectMove = exectMove;
-    }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public void computerMove() {
-//        AlphaBetaPruning alphaBetaPruning = new AlphaBetaPruning(playerColourIsWhite,new BoardState(App.board));
-//        Move move = alphaBetaPruning.findBestMove();
-//        //执行移动，修改状态
-//
-//        x = move.getPiece().col*48;
-//        y = move.getPiece().row*48;
+        //ai只执行一次
+        aiTurn = false;
 
-        //test move
-        Move move = new Move(App.board.tiles[5][12].getPiece(),5,11);
+
+
+        AlphaBetaPruning alphaBetaPruning = new AlphaBetaPruning(playerColourIsWhite,new BoardState(App.board));
+        Move move = alphaBetaPruning.findBestMove();
+        //执行移动，修改状态
+
+
+//        //test move
+//        Move move = new Move(App.board.tiles[5][12].getPiece(),5,11);
 
         selectedTile = App.board.tiles[move.getPiece().col][move.getPiece().row];
         targetTile = App.board.tiles[move.getX()][move.getY()];
@@ -183,12 +174,17 @@ public class Manager {
         y=selectedTile.getRow()*48;
         exectMove = true;
 
-        playerTurn = true;
+
         App.manager.playerLeftTime= App.manager.playerLeftTime+App.manager.playerIncrement;
 
 
 
         System.out.println("computer move");
+
+
+    }
+    public void drawPiece(){
+        p.image(selectedPiece.getImg(), this.x, this.y,48,48);
 
     }
 
