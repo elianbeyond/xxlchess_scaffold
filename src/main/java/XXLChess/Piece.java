@@ -4,6 +4,8 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 
+import static XXLChess.Manager.PieceType.KING;
+
 public class Piece {
     private Boolean isWhite;
     private PImage img;
@@ -125,6 +127,10 @@ public class Piece {
             } else {
                 //pawn is not the first act
                 y--;
+                //blocked
+                if(boardState.pieces[x][y] != null){
+                    return availableMoves;
+                }
                 if (!(x >= 0 && x <= 13 && y >= 0 && y <= 13)) {
                     return availableMoves;
                 }
@@ -178,6 +184,9 @@ public class Piece {
             } else {
                 //pawn is not the first act
                 y++;
+                if(boardState.pieces[x][y] != null){
+                    return availableMoves;
+                }
                 if (!(x >= 0 && x <= 13 && y >= 0 && y <= 13)) {
                     return availableMoves;
                 }
@@ -433,13 +442,19 @@ public class Piece {
             Tile tileRecover = new Tile(tile.getP(),tile.getCol(),tile.getRow(),tile.getTileColor());
             tileRecover.setEnableMove(false);
             recover.add(tileRecover);
-            if (tile.getTileColor() == board.LIGHT_YELLOW) {
-                tile.setTileColor(board.LIGHT_BLUE);
-            } else if (tile.getTileColor() == board.BROWN ) {
-                tile.setTileColor(board.HIGHLIGHT_BLUE);
-            } else {
-                tile.setTileColor(board.RED);
+
+
+            if (tile.getTileColor() == Board.LIGHT_YELLOW && tile.getPiece() == null) {
+                tile.setTileColor(Board.LIGHT_BLUE);
+            } else if (tile.getTileColor() == Board.BROWN && tile.getPiece() == null) {
+                tile.setTileColor(Board.HIGHLIGHT_BLUE);
+            } else if(tile.getPiece().getPieceType()==KING) {
+                tile.setTileColor(Board.RED);
+            }else{
+                tile.setTileColor(Board.ORANGE);
             }
+
+
             tile.setEnableMove(true);
         }
 
@@ -466,14 +481,22 @@ public class Piece {
     }
 
 
-    public int getValue() {
-        return pieceType.getIntValue();
+    public double getValue() {
+
+        if(pieceType.toString().equals("PAWN")){
+
+            if((col==3||col==10)&&(row==3||row==10)){
+                return pieceType.getDoubleValue()*30000;
+            }
+        }
+
+        return pieceType.getDoubleValue();
     }
 
-    public int getPositionScore() {
+    public double getPositionScore() {
         col = Math.min(col,13-col);
         row = Math.min(row,13-row);
-        return (col*row);
+        return (pieceType.getDoubleValue()*col*row/10);
     }
 }
 

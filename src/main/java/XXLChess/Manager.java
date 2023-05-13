@@ -26,33 +26,42 @@ public class Manager {
     public int playerIncrement;
     public int computerIncrement;
     public static char[][] chessBoard;
-    public enum PieceType{
-        PAWN(10),
-        ROOK(50),
-        KNIGHT(20),
-        KNIGHT_KING(50),
-        BISHOP(30),
-        ARCHBISHOP(70),
-        CAMEL(20),
-        GUARD(50),
-        AMAZON(120),
-        KING(Integer.MAX_VALUE),
-        CHANCELLOR(80),
-        QUEEN(90);
-        private final int intValue;
+    boolean whiteKingCaptured;
+    boolean blackKingCaptured;
+    public static int  moveTimeCounter;
+    public int maxMovementTime;
 
-        private PieceType(int intValue) {
-            this.intValue = intValue;
+    String endInfo;
+    boolean gameOver;
+    public enum PieceType{
+        PAWN(1),
+        ROOK(5.25),
+        KNIGHT(2),
+        KNIGHT_KING(50),
+        BISHOP(3.625),
+        ARCHBISHOP(7.5),
+        CAMEL(2),
+        GUARD(5),
+        AMAZON(12),
+        KING(99999),
+        CHANCELLOR(8.5),
+        QUEEN(9.5);
+        private final double doubleValue;
+
+        private PieceType(double doubleValue) {
+            this.doubleValue = doubleValue;
         }
 
-        public int getIntValue() {
-            return intValue;
+        public double getDoubleValue() {
+            return doubleValue;
         }
     }
 
     public Manager (PApplet parent,Boolean exectMove){
         this.p= parent;
         this.exectMove = exectMove;
+        whiteKingCaptured = false;
+        blackKingCaptured = false;
     }
 
     public void getConfig() throws FileNotFoundException {
@@ -69,6 +78,7 @@ public class Manager {
         playerIncrement =jsonObject.getJSONObject("time_controls").getJSONObject("player").getInt("increment");
         computerLeftTime =jsonObject.getJSONObject("time_controls").getJSONObject("cpu").getInt("seconds");
         computerIncrement =jsonObject.getJSONObject("time_controls").getJSONObject("cpu").getInt("increment");
+        maxMovementTime=jsonObject.getInt("max_movement_time");
 
     }
     public void getLayout() throws IOException {
@@ -98,7 +108,10 @@ public class Manager {
         int targetX = targetTile.getCol()*48;
         int targetY = targetTile.getRow()*48;
 
-        if (this.x != targetX || this.y != targetY) { // 到达目标点后的处理
+
+
+
+        if ((this.x != targetX || this.y != targetY)&&moveTimeCounter<maxMovementTime*60) { // 到达目标点后的处理
 
             if (this.x < targetX) { // 判断是否到达目标点
                 this.x += 6; // 每一帧移动的距离
@@ -115,6 +128,17 @@ public class Manager {
 
 
         }else{
+            //end condition
+            Piece capturedPiece = App.board.tiles[targetTile.getCol()][targetTile.getRow()].getPiece();
+            if(capturedPiece!=null){
+                if(capturedPiece.getPieceType().toString().equals("KING")){
+                    if(capturedPiece.getWhite()){
+                        this.whiteKingCaptured = true;
+                    }else{
+                        this.blackKingCaptured = true;
+                    }
+                }
+            }
             //When the conditions are met, pawn becomes queen
             this.exectMove =false;
             if(!playerTurn){
@@ -123,8 +147,6 @@ public class Manager {
                 playerTurn =false;
                 aiTurn = true;
             }
-
-
 
 
             if(this.y==6*48&&selectedPiece.getPieceType().equals(PieceType.PAWN)&&selectedPiece.getWhite()){
@@ -150,14 +172,30 @@ public class Manager {
 
 
     public void computerMove() {
+
+        if(this.gameOver){
+            return;
+        }
         //ai只执行一次
         aiTurn = false;
 
-
-
-        AlphaBetaPruning alphaBetaPruning = new AlphaBetaPruning(!playerColourIsWhite,new BoardState(App.board));
+        HeuristicAI alphaBetaPruning = new HeuristicAI(!playerColourIsWhite,new BoardState(App.board));
         Move move = alphaBetaPruning.findBestMove();
+        if(move==null){
+            return;
+        }
         //执行移动，修改状态
+        Piece capturedPiece = App.board.tiles[move.getX()][move.getY()].getPiece();
+
+        if(capturedPiece!=null){
+            if(capturedPiece.getPieceType().toString().equals("KING")){
+                if(capturedPiece.getWhite()){
+                    this.whiteKingCaptured = true;
+                }else{
+                    this.blackKingCaptured = true;
+                }
+            }
+        }
 
 
 //        //test move
@@ -174,13 +212,15 @@ public class Manager {
         x=selectedTile.getCol()*48;
         y=selectedTile.getRow()*48;
         exectMove = true;
-
+        moveTimeCounter = 0;
 
         App.manager.playerLeftTime= App.manager.playerLeftTime+App.manager.playerIncrement;
 
 
 
         System.out.println("computer move");
+
+
 
 
     }

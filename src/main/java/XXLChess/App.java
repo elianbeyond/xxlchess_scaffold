@@ -23,6 +23,7 @@ public class App extends PApplet {
 
     public static final int FPS = 60;
     public static int  startTime;
+
 	
     public String configPath;
     public static Manager manager;
@@ -127,7 +128,12 @@ public class App extends PApplet {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        this.board.clickEvent(mouseX,mouseY);
+        if(manager.gameOver){
+            return;
+        }else{
+            this.board.clickEvent(mouseX,mouseY);
+        }
+
 
     }
 
@@ -143,24 +149,28 @@ public class App extends PApplet {
 
         background(200); // add a background color to avoid flickering
 
-        int elapsedTime = (millis() - startTime) / 1000;
 
-        // 更新玩家1和玩家2的剩余时间
-        int player1Time = manager.playerLeftTime - elapsedTime;
-        int player2Time = manager.computerLeftTime - elapsedTime;
 
-        // 显示玩家1和玩家2的剩余时间
-        textAlign(CENTER);
-        textSize(20);
-        fill(255); // 设置文本颜色为白色
-        text("Player 1: " + player1Time, 48*15, 48*2);
-        text("Player 2: " + player2Time, 48*15, 48*10);
+        if(!manager.gameOver){
+            // 显示玩家1和玩家2的剩余时间
+            int elapsedTime = (millis() - startTime) / 1000;
+
+            // 更新玩家1和玩家2的剩余时间
+            int player1Time = manager.playerLeftTime - elapsedTime;
+            int player2Time = manager.computerLeftTime - elapsedTime;
+            textAlign(CENTER);
+            textSize(20);
+            fill(255); // 设置文本颜色为白色
+            text(player1Time/60+":"+player1Time%60, 48*15, 48*2);
+            text(player2Time/60+":"+player2Time%60, 48*15, 48*10);
+        }
 
         // draw the board
         this.board.drawBoard();
         //test
         //
         if(manager.exectMove){
+            manager.moveTimeCounter ++;
             manager.speedControl();
             manager.drawPiece();
         }
@@ -168,6 +178,33 @@ public class App extends PApplet {
         if(!manager.playerTurn&&manager.aiTurn){
             this.manager.computerMove();
             manager.computerLeftTime = manager.computerLeftTime+manager.computerIncrement;
+        }
+        if(manager.whiteKingCaptured){
+            manager.gameOver = true;
+            if(manager.playerColourIsWhite){
+                manager.endInfo = "player lose";
+            }else{
+                manager.endInfo = "player win";
+            }
+            manager.computerLeftTime = manager.computerLeftTime+manager.computerIncrement;
+
+        }
+        if(manager.blackKingCaptured){
+            manager.gameOver = true;
+            if(manager.playerColourIsWhite){
+                manager.endInfo = "player win";
+            }else{
+                manager.endInfo = "player lose";
+            }
+            manager.blackKingCaptured = !manager.blackKingCaptured;
+        }
+
+        if(manager.gameOver){
+            // 显示
+            textAlign(CENTER);
+            textSize(20);
+            fill(255); // 设置文本颜色为白色
+            text(manager.endInfo, 48*15+10, 48*6);
         }
         
     }
